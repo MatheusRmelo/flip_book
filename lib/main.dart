@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -48,34 +50,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final _offsets = <Offset>[];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: GestureDetector(
-        onPanStart: (details) {},
+        onPanUpdate: (details) {
+          setState(() {
+            _offsets.add(details.globalPosition);
+          });
+        },
         child: Center(
           child: CustomPaint(
-            painter: FlipBookPainter(),
+            painter: FlipBookPainter(_offsets),
             child: Container(
-              height: 300,
-              width: 300,
-              color: Colors.red[50],
+              height: double.infinity,
+              width: double.infinity,
             ),
           ),
         ),
@@ -85,9 +76,23 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class FlipBookPainter extends CustomPainter {
+  final offsets;
+
+  FlipBookPainter(this.offsets) : super();
+
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO: implement paint
+    final paint = Paint()
+      ..color = Colors.deepPurple
+      ..isAntiAlias = true
+      ..strokeWidth = 3;
+    for (int i = 0; i < offsets.length; i++) {
+      if (offsets[i] != null && offsets[i + 1] != null) {
+        canvas.drawLine(offsets[i], offsets[i + 1], paint);
+      } else if (offsets[i] != null && offsets[i + 1] == null) {
+        canvas.drawPoints(PointMode.points, [offsets[i]], paint);
+      }
+    }
   }
 
   @override
