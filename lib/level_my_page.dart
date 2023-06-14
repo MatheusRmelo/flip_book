@@ -30,66 +30,47 @@ class _LevelPageState extends State<LevelPage> {
 class FlipBookPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.deepPurple
+    final paintDisabled = Paint()
+      ..color = Color(0xFFE8EAED)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
-    //List<int> levels = [1];
+    final paintEnabled = Paint()
+      ..color = Color(0xFF2060FE)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 5;
 
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(300, 200), width: 100, height: 100),
-        0,
-        pi * 3 / 4,
-        false,
-        paint);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(229, 270), width: 100, height: 100),
-        pi * 3,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.red);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(229, 270), width: 100, height: 100),
-        pi * 3,
-        -pi * 3 / 4,
-        false,
-        paint..color = Colors.redAccent);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(300, 340), width: 100, height: 100),
-        pi * 5 / 4,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.black);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(300, 341), width: 100, height: 100),
-        0,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.green);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(229, 412), width: 100, height: 100),
-        pi * 3,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.blue);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(229, 412), width: 100, height: 100),
-        pi * 3,
-        -pi * 3 / 4,
-        false,
-        paint..color = Colors.blueAccent);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(300, 483), width: 100, height: 100),
-        pi * 5 / 4,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.black);
-    canvas.drawArc(
-        Rect.fromCenter(center: Offset(300, 484), width: 100, height: 100),
-        0,
-        pi * 3 / 4,
-        false,
-        paint..color = Colors.green);
+    List<int> levels = [1, 2, 3, 3, 4, 4, 5, 5, 5, 5];
+
+    for (int i = 0; i < levels.length; i++) {
+      double dx = i % 2 == 0 ? 300 : 229;
+      double dy = 200 + (i * 70);
+      double startAngle = 0;
+      double sweepAngle = pi * 3 / 4;
+
+      if (i == 0) {
+        canvas.drawArc(
+            Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
+            startAngle,
+            sweepAngle,
+            false,
+            i < 3 ? paintEnabled : paintDisabled);
+      } else {
+        startAngle = i % 2 == 0 ? pi * 5 / 4 : pi * 3;
+
+        canvas.drawArc(
+            Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
+            startAngle,
+            sweepAngle,
+            false,
+            i < 3 ? paintEnabled : paintDisabled);
+        canvas.drawArc(
+            Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
+            -startAngle,
+            -sweepAngle,
+            false,
+            i < 3 ? paintEnabled : paintDisabled);
+      }
+    }
   }
 
   @override

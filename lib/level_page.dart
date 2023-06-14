@@ -16,66 +16,111 @@ class _LevelPage2State extends State<LevelPage2> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Stack(
-          children: [
-            Positioned.fill(
-                child: CustomPaint(
-              painter: FlipBookPainter(),
-              child: Container(
-                height: double.infinity,
-                width: double.infinity,
-              ),
-            )),
-            Positioned(
-              child: GestureDetector(
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  child: SvgPicture.asset('assets/levels/complete_level.svg'),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                    child: CustomPaint(
+                  painter: FlipBookPainter(),
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                )),
+                Positioned(
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/complete_level.svg'),
+                    ),
+                  ),
+                  left: 325,
+                  top: 160,
                 ),
-              ),
-              left: 325,
-              top: 160,
-            ),
-            Positioned(
-              child: GestureDetector(
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  child: SvgPicture.asset('assets/levels/current_level.svg'),
+                Positioned(
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/current_level.svg'),
+                    ),
+                  ),
+                  left: 230,
+                  top: 200,
                 ),
-              ),
-              left: 230,
-              top: 200,
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                  ),
+                  left: 230,
+                  top: 290,
+                ),
+
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                  ),
+                  left: 230,
+                  top: 350,
+                ),
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                  ),
+                  left: 230,
+                  top: 420,
+                ),
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                  ),
+                  left: 230,
+                  top: 480,
+                ),
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                  ),
+                  left: 230,
+                  top: 560,
+                ),
+                // Positioned(
+                //   child: Container(
+                //     width: 50,
+                //     height: 50,
+                //     child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+                //   ),
+                //   left: 300,
+                //   top: 350,
+                // ),
+                Positioned(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    child: SvgPicture.asset('assets/levels/trophy.svg'),
+                  ),
+                  left: 240,
+                  top: 830,
+                ),
+              ],
             ),
-            Positioned(
-              child: Container(
-                width: 50,
-                height: 50,
-                child: SvgPicture.asset('assets/levels/blocked_level.svg'),
-              ),
-              left: 225,
-              top: 290,
-            ),
-            Positioned(
-              child: Container(
-                width: 50,
-                height: 50,
-                child: SvgPicture.asset('assets/levels/blocked_level.svg'),
-              ),
-              left: 225,
-              top: 290,
-            ),
-            Positioned(
-              child: Container(
-                width: 50,
-                height: 50,
-                child: SvgPicture.asset('assets/levels/trophy.svg'),
-              ),
-              left: 240,
-              top: 830,
-            ),
-          ],
+          ),
         ));
   }
 }
@@ -106,7 +151,7 @@ class FlipBookPainter extends CustomPainter {
           startAngle,
           sweepAngle,
           false,
-          i < 1 ? paintEnabled : paintDisabled);
+          i < 3 ? paintEnabled : paintDisabled);
     }
   }
 
