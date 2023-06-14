@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LevelPage2 extends StatefulWidget {
   const LevelPage2({super.key});
@@ -26,24 +27,22 @@ class _LevelPage2State extends State<LevelPage2> {
               ),
             )),
             Positioned(
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(45),
-                  color: Colors.yellow,
+              child: GestureDetector(
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  child: SvgPicture.asset('assets/levels/complete_level.svg'),
                 ),
               ),
               left: 325,
-              top: 150,
+              top: 160,
             ),
             Positioned(
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(45),
-                  color: Colors.blue,
+              child: GestureDetector(
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  child: SvgPicture.asset('assets/levels/current_level.svg'),
                 ),
               ),
               left: 230,
@@ -53,13 +52,28 @@ class _LevelPage2State extends State<LevelPage2> {
               child: Container(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(45),
-                  color: Colors.grey,
-                ),
+                child: SvgPicture.asset('assets/levels/blocked_level.svg'),
               ),
               left: 225,
               top: 290,
+            ),
+            Positioned(
+              child: Container(
+                width: 50,
+                height: 50,
+                child: SvgPicture.asset('assets/levels/blocked_level.svg'),
+              ),
+              left: 225,
+              top: 290,
+            ),
+            Positioned(
+              child: Container(
+                width: 50,
+                height: 50,
+                child: SvgPicture.asset('assets/levels/trophy.svg'),
+              ),
+              left: 240,
+              top: 830,
             ),
           ],
         ));
