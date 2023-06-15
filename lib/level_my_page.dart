@@ -15,12 +15,18 @@ class _LevelPageState extends State<LevelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Center(
-          child: CustomPaint(
-            painter: FlipBookPainter(),
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: CustomPaint(
+                painter: FlipBookPainter(),
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                ),
+              ),
             ),
           ),
         ));
@@ -39,11 +45,17 @@ class FlipBookPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
 
-    List<int> levels = [1, 2, 3, 3, 4, 4, 5, 5, 5, 5];
-
+    List<int> levels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    int count = 0;
+    bool isLeft = true;
+    int mult = 1;
     for (int i = 0; i < levels.length; i++) {
-      double dx = i % 2 == 0 ? 300 : 229;
-      double dy = 200 + (i * 70);
+      double dx = i == 0
+          ? 300
+          : !isLeft
+              ? 300
+              : 229;
+      double dy = 20 + ((i == 0 ? 0 : mult) * 70);
       double startAngle = 0;
       double sweepAngle = pi * 3 / 4;
 
@@ -55,20 +67,29 @@ class FlipBookPainter extends CustomPainter {
             false,
             i < 3 ? paintEnabled : paintDisabled);
       } else {
-        startAngle = i % 2 == 0 ? pi * 5 / 4 : pi * 3;
+        startAngle = !isLeft ? pi * 5 / 4 : pi * 3;
+        if (i % 2 != 0) {
+          canvas.drawArc(
+              Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
+              startAngle,
+              sweepAngle,
+              false,
+              i < 6 ? paintEnabled : paintDisabled);
+        } else {
+          canvas.drawArc(
+              Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
+              -startAngle,
+              -sweepAngle,
+              false,
+              i < 6 ? paintEnabled : paintDisabled);
+        }
 
-        canvas.drawArc(
-            Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
-            startAngle,
-            sweepAngle,
-            false,
-            i < 3 ? paintEnabled : paintDisabled);
-        canvas.drawArc(
-            Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
-            -startAngle,
-            -sweepAngle,
-            false,
-            i < 3 ? paintEnabled : paintDisabled);
+        count++;
+        if (count == 2) {
+          isLeft = !isLeft;
+          count = 0;
+          mult++;
+        }
       }
     }
   }
