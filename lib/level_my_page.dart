@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LevelPage extends StatefulWidget {
   const LevelPage({super.key});
@@ -19,14 +20,65 @@ class _LevelPageState extends State<LevelPage> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: CustomPaint(
-                painter: FlipBookPainter(),
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                    child: CustomPaint(
+                  painter: FlipBookPainter(),
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                )),
+                Positioned(
+                  left: 320,
+                  top: 16,
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/complete_level.svg'),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  left: 220,
+                  top: 24,
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/current_level.svg'),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 150,
+                  top: 64,
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/blocked_level.svg'),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 220,
+                  top: 120,
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child:
+                          SvgPicture.asset('assets/levels/blocked_level.svg'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ));
@@ -74,14 +126,14 @@ class FlipBookPainter extends CustomPainter {
               startAngle,
               sweepAngle,
               false,
-              i < 6 ? paintEnabled : paintDisabled);
+              i < 2 ? paintEnabled : paintDisabled);
         } else {
           canvas.drawArc(
               Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
               -startAngle,
               -sweepAngle,
               false,
-              i < 6 ? paintEnabled : paintDisabled);
+              i < 2 ? paintEnabled : paintDisabled);
         }
 
         count++;
