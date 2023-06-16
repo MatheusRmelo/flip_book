@@ -30,54 +30,7 @@ class _LevelPageState extends State<LevelPage> {
                     width: double.infinity,
                   ),
                 )),
-                Positioned(
-                  left: 320,
-                  top: 16,
-                  child: GestureDetector(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child:
-                          SvgPicture.asset('assets/levels/complete_level.svg'),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 220,
-                  top: 24,
-                  child: GestureDetector(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child:
-                          SvgPicture.asset('assets/levels/current_level.svg'),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 150,
-                  top: 64,
-                  child: GestureDetector(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child:
-                          SvgPicture.asset('assets/levels/blocked_level.svg'),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 220,
-                  top: 120,
-                  child: GestureDetector(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child:
-                          SvgPicture.asset('assets/levels/blocked_level.svg'),
-                    ),
-                  ),
-                ),
+                ...FlipBookPainter().positonedLevels()
               ],
             ),
           ),
@@ -86,6 +39,9 @@ class _LevelPageState extends State<LevelPage> {
 }
 
 class FlipBookPainter extends CustomPainter {
+  List<int> levels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  int currentLevel = 3;
+
   @override
   void paint(Canvas canvas, Size size) {
     final paintDisabled = Paint()
@@ -97,7 +53,6 @@ class FlipBookPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
 
-    List<int> levels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     int count = 0;
     bool isLeft = true;
     int mult = 1;
@@ -117,7 +72,7 @@ class FlipBookPainter extends CustomPainter {
             startAngle,
             sweepAngle,
             false,
-            i < 3 ? paintEnabled : paintDisabled);
+            i < currentLevel ? paintEnabled : paintDisabled);
       } else {
         startAngle = !isLeft ? pi * 5 / 4 : pi * 3;
         if (i % 2 != 0) {
@@ -126,14 +81,14 @@ class FlipBookPainter extends CustomPainter {
               startAngle,
               sweepAngle,
               false,
-              i < 2 ? paintEnabled : paintDisabled);
+              i < currentLevel ? paintEnabled : paintDisabled);
         } else {
           canvas.drawArc(
               Rect.fromCenter(center: Offset(dx, dy), width: 100, height: 100),
               -startAngle,
               -sweepAngle,
               false,
-              i < 2 ? paintEnabled : paintDisabled);
+              i < currentLevel ? paintEnabled : paintDisabled);
         }
 
         count++;
@@ -144,6 +99,44 @@ class FlipBookPainter extends CustomPainter {
         }
       }
     }
+  }
+
+  List<Positioned> positonedLevels() {
+    List<Positioned> positions = [];
+    final List<double> left = [320, 240, 150, 240];
+    int count = 0;
+    for (int i = 0; i < levels.length; i++) {
+      if (count == 4) {
+        count = 0;
+      }
+      positions.add(Positioned(
+        key: Key("${i}_key"),
+        left: left[count],
+        top: i * 35,
+        child: GestureDetector(
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: SvgPicture.asset(
+                'assets/levels/${i < currentLevel ? 'complete_level' : i == currentLevel ? 'current_level' : 'blocked_level'}.svg'),
+          ),
+        ),
+      ));
+      count++;
+    }
+    positions.add(Positioned(
+      key: Key("${levels.length}_key"),
+      left: left[count],
+      top: levels.length * 35,
+      child: GestureDetector(
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: SvgPicture.asset('assets/levels/trophy.svg'),
+        ),
+      ),
+    ));
+    return positions;
   }
 
   @override
